@@ -1,0 +1,1 @@
+json.partial! 'yards/yard', collection: @yards, as: :yard

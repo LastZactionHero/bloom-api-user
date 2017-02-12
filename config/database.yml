@@ -1,0 +1,28 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  timeout: 5000
+  host: db
+  port: 5432
+
+development:
+  <<: *default
+  database: bloom_user_development
+  username: postgres
+  password:
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: bloom_user_test
+  username: postgres
+  password:
+
+production:
+  <<: *default
+  database: bloom_user_production
+  username: postgres
+  password:

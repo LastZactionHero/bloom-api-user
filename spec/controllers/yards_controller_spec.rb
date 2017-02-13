@@ -35,6 +35,9 @@ describe YardsController do
 
   describe 'show' do
     it 'shows a yard' do
+      bed_a = FactoryGirl.create(:bed, yard: yard, name: 'bed a')
+      bed_b = FactoryGirl.create(:bed, yard: yard, name: 'bed b')
+
       get(:show, params: {id: yard.id})
       expect(response.status).to eq(200)
       body = JSON.parse(response.body)
@@ -42,6 +45,7 @@ describe YardsController do
       expect(body['id']).to eq(yard.id)
       expect(body['zipcode']).to eq(zipcode)
       expect(body['zone']).to eq(zone)
+      expect(body['beds'].length).to eq(2)
     end
 
     it 'returns an error if the yard is not found' do

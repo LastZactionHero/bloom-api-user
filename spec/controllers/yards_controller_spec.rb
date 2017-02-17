@@ -24,6 +24,7 @@ describe YardsController do
       body = JSON.parse(response.body)
       expect(body.length).to eq(2)
       expect(body.map{|y| y['id']}.sort).to eq([yard.id, yard_2.id])
+      puts body
     end
 
     it 'returns an error if the user is not signed in' do

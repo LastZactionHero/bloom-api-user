@@ -1,20 +1,31 @@
 require 'rails_helper'
 
 describe UsersController do
+  render_views
+
   let(:email) { 'user@site.com' }
   let(:password) { 'abc1234567' }
+
+  before do
+    @request.env["HTTP_ACCEPT"] = "application/json"
+  end
 
   describe 'sign_up' do
     it 'creates a user' do
       expect(User.count).to eq(0) # Assumption
 
       post(:sign_up_user, params: { email: email, password: password, password_confirmation: password })
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(201)
 
+      # User is created
       expect(User.count).to eq(1)
       user = User.first
       expect(user.email).to eq(email)
       expect(user.valid_password?(password)).to be_truthy
+
+      # User is returned
+      body = JSON.parse(response.body)
+      expect(body).to eq({'email' => user.email})
     end
 
     it 'signs in' do
@@ -60,6 +71,10 @@ describe UsersController do
       post(:sign_in_user, params: { email: user.email, password: password })
       expect(response.status).to eq(201)
       expect(session['warden.user.user.key'][0][0]).to eq(user.id)
+
+      # User is returned
+      body = JSON.parse(response.body)
+      expect(body).to eq({'email' => user.email})
     end
 
     it 'returns an error if the email is not found' do

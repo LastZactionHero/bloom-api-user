@@ -31,7 +31,7 @@ class UsersController < ApplicationController
   end
 
   def ping
-    head 401
+    head 401 unless current_user
   end
 
 end

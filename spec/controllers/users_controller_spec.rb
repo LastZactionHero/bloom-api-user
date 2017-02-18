@@ -95,4 +95,21 @@ describe UsersController do
       expect(session).to be_empty
     end
   end
+
+  describe 'ping' do
+    let(:user) { FactoryGirl.create(:user, email: email, password: password) }
+
+    it 'returns the user if signed in' do
+      sign_in(user)
+      get(:ping)
+      expect(response.status).to eq(200)
+      body = JSON.parse(response.body)
+      expect(body['email']).to eq(user.email)
+    end
+
+    it 'returns 401 if not signed in' do
+      get(:ping)
+      expect(response.status).to eq(401)
+    end
+  end
 end

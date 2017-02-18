@@ -14,7 +14,7 @@ describe UsersController do
     it 'creates a user' do
       expect(User.count).to eq(0) # Assumption
 
-      post(:sign_up_user, params: { email: email, password: password, password_confirmation: password })
+      post(:sign_up_user, params: { email: email, password: password })
       expect(response.status).to eq(201)
 
       # User is created
@@ -29,35 +29,28 @@ describe UsersController do
     end
 
     it 'signs in' do
-      post(:sign_up_user, params: { email: email, password: password, password_confirmation: password })
+      post(:sign_up_user, params: { email: email, password: password })
       expect(session['warden.user.user.key'][0][0]).to eq(User.first.id)
     end
 
     it 'returns an error if the password is too short' do
-      post(:sign_up_user, params: { email: email, password: '1234', password_confirmation: '1234' })
+      post(:sign_up_user, params: { email: email, password: '1234' })
       expect(response.status).to eq(400)
       body = JSON.parse(response.body)
       expect(body['errors']['password']).to include('is too short (minimum is 6 characters)')
     end
 
-    it 'returns an error if the passwords do not match' do
-      post(:sign_up_user, params: { email: email, password: password, password_confirmation: 'differentpassword' })
-      expect(response.status).to eq(400)
-      body = JSON.parse(response.body)
-      expect(body['errors']['password_confirmation']).to include('does not match')
-    end
-
     it 'returns an error if the user already exists' do
       FactoryGirl.create(:user, email: email, password: password)
 
-      post(:sign_up_user, params: { email: email, password: '1234', password_confirmation: '1234' })
+      post(:sign_up_user, params: { email: email, password: '1234' })
       expect(response.status).to eq(400)
       body = JSON.parse(response.body)
       expect(body['errors']['email']).to include('has already been taken')
     end
 
     it 'returns an error if the email is not provided' do
-      post(:sign_up_user, params: { password: password, password_confirmation: password })
+      post(:sign_up_user, params: { password: password })
       expect(response.status).to eq(400)
       body = JSON.parse(response.body)
       expect(body['errors']['email']).to include('can\'t be blank')

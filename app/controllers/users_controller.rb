@@ -1,15 +1,7 @@
 class UsersController < ApplicationController
   def sign_up_user
-    password = params[:password]
-    password_confirmation = params[:password_confirmation]
-    if password && password != password_confirmation
-      render status: 400, json: { errors: { password_confirmation: ['does not match']} }
-      return
-    end
-
     @user = User.create(email: params[:email],
-                       password: params[:password],
-                       password_confirmation: params[:password_confirmation])
+                       password: params[:password])
 
     if @user.errors.any?
       render status: 400, json: { errors: @user.errors }
@@ -37,4 +29,9 @@ class UsersController < ApplicationController
   def sign_out_user
     sign_out(current_user) if current_user
   end
+
+  def ping
+    head 401
+  end
+
 end

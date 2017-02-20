@@ -70,13 +70,15 @@ describe YardsController do
     it 'creates a Yard' do
       expect(Yard.count).to eq(0) # Assumption
 
-      post :create, params: { zone: zone, zipcode: zipcode }
+      post :create, params: { zone: zone, zipcode: zipcode, soil: 'wet', preferred_plant_types: ['annuals'] }
       expect(response.status).to eq(201)
 
       yard = Yard.first
       expect(yard.zipcode).to eq(zipcode)
       expect(yard.zone).to eq(zone)
       expect(yard.user).to eq(user)
+      expect(yard.soil).to eq('wet')
+      expect(yard.preferred_plant_types).to eq(['annuals'])
     end
 
     it 'returns a yard' do

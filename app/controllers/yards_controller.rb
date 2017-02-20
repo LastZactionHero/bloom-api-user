@@ -13,7 +13,9 @@ class YardsController < ApplicationController
     @yard = Yard.create(
       user: current_user,
       zipcode: params[:zipcode],
-      zone: params[:zone]
+      zone: params[:zone],
+      soil: params[:soil],
+      preferred_plant_types: params[:preferred_plant_types]
     )
     if @yard.errors.any?
       render status: 400, json: { errors: @yard.errors }

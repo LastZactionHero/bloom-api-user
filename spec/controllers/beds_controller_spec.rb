@@ -18,11 +18,12 @@ describe BedsController do
     it 'creates a Bed' do
       expect(Bed.count).to eq(0)
 
-      post(:create, params: { yard_id: yard.id, width: 30, depth: 6 })
+      post(:create, params: { yard_id: yard.id, width: 30, depth: 6, watered: true })
       expect(response.status).to eq(201)
 
       bed = Bed.first
       expect(bed.yard).to eq(yard)
+      expect(bed.watered).to be_truthy
     end
 
     it 'returns an error if the Yard does not exist' do

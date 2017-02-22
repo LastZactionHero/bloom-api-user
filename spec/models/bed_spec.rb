@@ -41,7 +41,7 @@ RSpec.describe Bed, type: :model do
     end
 
     it 'validates sunlight_morning is in list' do
-      sunlights = %w(full_sun partial_sun partial_shade full_shade filtered_sun)
+      sunlights = %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade)
       sunlights.each do |sunlight|
         bed = Bed.create(sunlight_morning: sunlight)
         expect(bed.errors[:sunlight_morning]).to be_empty
@@ -51,7 +51,7 @@ RSpec.describe Bed, type: :model do
     end
 
     it 'validates sunlight_afternoon is in list' do
-      sunlights = %w(full_sun partial_sun partial_shade full_shade filtered_sun)
+      sunlights = %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade)
       sunlights.each do |sunlight|
         bed = Bed.create(sunlight_afternoon: sunlight)
         expect(bed.errors[:sunlight_afternoon]).to be_empty

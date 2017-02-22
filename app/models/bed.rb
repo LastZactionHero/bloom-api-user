@@ -15,6 +15,6 @@ class Bed < ApplicationRecord
   validates_presence_of :depth
   validates :depth, numericality: { greater_than_or_equal_to: 2.0, less_than_or_equal_to: 100.0 }
   validates :orientation, inclusion: { in: %w(north south east west) }, allow_nil: true
-  validates :sunlight_morning, inclusion: { in: %w(full_sun partial_sun partial_shade full_shade filtered_sun) }, allow_nil: true
-  validates :sunlight_afternoon, inclusion: { in: %w(full_sun partial_sun partial_shade full_shade filtered_sun) }, allow_nil: true
+  validates :sunlight_morning, inclusion: { in: %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade) }, allow_nil: true
+  validates :sunlight_afternoon, inclusion: { in: %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade) }, allow_nil: true
 end

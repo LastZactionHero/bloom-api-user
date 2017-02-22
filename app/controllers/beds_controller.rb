@@ -16,10 +16,10 @@ class BedsController < ApplicationController
       width: params[:width].to_f,
       depth: params[:depth].to_f,
       orientation: params[:orientation],
-      attached_to_house: params[:attached_to_house] == 'true',
+      attached_to_house: params[:attached_to_house].to_bool,
       sunlight_morning: params[:sunlight_morning],
       sunlight_afternoon: params[:sunlight_afternoon],
-      watered: params[:watered] == 'true'
+      watered: params[:watered].to_bool
     )
     if @bed.errors.any?
       render status: 400, json: { errors: @bed.errors }
@@ -34,10 +34,10 @@ class BedsController < ApplicationController
     @bed.width = params[:width].to_f if params[:width]
     @bed.depth = params[:depth].to_f if params[:depth]
     @bed.orientation = params[:orientation] if params[:orientation]
-    @bed.attached_to_house = params[:attached_to_house] == 'true' if params[:attached_to_house]
+    @bed.attached_to_house = params[:attached_to_house].to_bool unless params[:attached_to_house].nil?
     @bed.sunlight_morning = params[:sunlight_morning] if params[:sunlight_morning]
     @bed.sunlight_afternoon = params[:sunlight_afternoon] if params[:sunlight_afternoon]
-    @bed.watered = params[:watered] == 'true' if params[:watered]
+    @bed.watered = params[:watered].to_bool unless params[:watered].nil?
     @bed.save
 
     if @bed.errors.any?

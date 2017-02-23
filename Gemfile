@@ -35,6 +35,8 @@ group :development, :test do
 end
 
 group :development do
+  # Waiting for Annotate update to support 5.0.1, rake version conflict
+  gem 'annotate', :git => 'https://github.com/ctran/annotate_models.git', :ref => '00c9da722e8a315d62b7c8b1792f89c480d10e28'
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

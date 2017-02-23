@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/ctran/annotate_models.git
+  revision: 00c9da722e8a315d62b7c8b1792f89c480d10e28
+  ref: 00c9da722e8a315d62b7c8b1792f89c480d10e28
+  specs:
+    annotate (2.7.1)
+      activerecord (>= 3.2, < 6.0)
+      rake (>= 10.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -159,6 +168,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  annotate!
   byebug
   devise (~> 4.2)
   factory_girl_rails (~> 4.8)

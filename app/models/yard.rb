@@ -1,8 +1,22 @@
-# - user_id
-# - zipcode (string)
-# - zone (string)
-# - soil (string) (wet, moderate, dry)
-# - preferred_plant_types (jsonb) (annuals, perennials,  deciduous_shrubs, evergreen_shrubs, evergreen_trees, shade_trees, ornamental_trees)
+# == Schema Information
+#
+# Table name: yards
+#
+#  id                    :integer          not null, primary key
+#  user_id               :integer
+#  zipcode               :string
+#  zone                  :string
+#  soil                  :string
+#  preferred_plant_types :jsonb
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+# Indexes
+#
+#  index_yards_on_user_id  (user_id)
+#  index_yards_on_zipcode  (zipcode)
+#  index_yards_on_zone     (zone)
+#
 class Yard < ApplicationRecord
   belongs_to :user, optional: true
   has_many :beds

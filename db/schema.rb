@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170212203626) do
+ActiveRecord::Schema.define(version: 20170223064658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,15 +18,18 @@ ActiveRecord::Schema.define(version: 20170212203626) do
   create_table "beds", force: :cascade do |t|
     t.integer  "yard_id"
     t.string   "name"
-    t.boolean  "attached_to_house",  default: false
+    t.boolean  "attached_to_house",          default: false
     t.string   "orientation"
     t.float    "width"
     t.float    "depth"
     t.string   "sunlight_morning"
     t.string   "sunlight_afternoon"
-    t.boolean  "watered",            default: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.boolean  "watered",                    default: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.integer  "api_bed_tmpl_id"
+    t.jsonb    "api_bed_tmpl_placements",    default: {}
+    t.jsonb    "api_bed_tmpl_plant_mapping", default: {}
     t.index ["yard_id"], name: "index_beds_on_yard_id", using: :btree
   end
 

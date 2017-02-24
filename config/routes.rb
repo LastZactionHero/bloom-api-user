@@ -6,5 +6,9 @@ Rails.application.routes.draw do
   get '/users/ping', to: 'users#ping'
 
   resources :yards, only: [:index, :show, :create, :update, :destroy]
-  resources :beds, only: [:index, :show, :create, :update, :destroy]
+  resources :beds, only: [:index, :show, :create, :update, :destroy] do
+    member do
+      patch :set_template
+    end
+  end
 end

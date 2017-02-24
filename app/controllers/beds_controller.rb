@@ -1,7 +1,7 @@
 class BedsController < ApplicationController
   before_action :validate_signed_in
   before_action :find_and_authorize_yard, only: [:create]
-  before_action :find_and_authorize_bed, only: [:update, :destroy, :show]
+  before_action :find_and_authorize_bed, only: [:update, :destroy, :show, :set_template]
 
   def index
   end
@@ -27,6 +27,17 @@ class BedsController < ApplicationController
     end
 
     render status: 201
+  end
+
+  def set_template
+    @bed.template_id = params[:template_id].to_i
+    puts params[:template_id].to_i
+    @bed.save
+
+    if @bed.errors.any?
+      render status: 400, json: { errors: @bed.errors }
+      return
+    end
   end
 
   def update

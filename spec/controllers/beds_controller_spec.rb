@@ -50,6 +50,34 @@ describe BedsController do
     end
   end
 
+  describe 'set_template' do
+    it 'updates template_id, returns a bed' do
+      expect(bed.template_id).to be_nil
+
+      template_id = 20
+      patch :set_template, params: { id: bed.id, template_id: template_id}
+      expect(response.status).to eq(200)
+
+      bed.reload
+      expect(bed.template_id).to eq(template_id)
+
+      body = JSON.parse(response.body)
+      expect(body['id']).to eq(bed.id)
+      expect(body['template_id']).to eq(bed.template_id)
+    end
+
+    it 'returns an error if the template_id is not valid' do
+      patch :set_template, params: { id: bed.id }
+      expect(response.status).to eq(400)
+      body = JSON.parse(response.body)
+      expect(body['errors']['template_id']).to eq(['is not valid'])
+    end
+
+    it 'runs find_and_authorize_bed' do
+
+    end
+  end
+
   describe 'update' do
 
     it 'updates the Bed' do

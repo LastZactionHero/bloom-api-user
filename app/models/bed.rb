@@ -2,21 +2,24 @@
 #
 # Table name: beds
 #
-#  id                     :integer          not null, primary key
-#  yard_id                :integer
-#  name                   :string
-#  attached_to_house      :boolean          default(FALSE)
-#  orientation            :string
-#  width                  :float
-#  depth                  :float
-#  sunlight_morning       :string
-#  sunlight_afternoon     :string
-#  watered                :boolean          default(FALSE)
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  template_id            :integer
-#  template_placements    :jsonb
-#  template_plant_mapping :jsonb
+#  id                         :integer          not null, primary key
+#  yard_id                    :integer
+#  name                       :string
+#  attached_to_house          :boolean          default(FALSE)
+#  orientation                :string
+#  width                      :float
+#  depth                      :float
+#  sunlight_morning           :string
+#  sunlight_afternoon         :string
+#  watered                    :boolean          default(FALSE)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  api_bed_tmpl_id            :integer
+#  api_bed_tmpl_placements    :jsonb
+#  api_bed_tmpl_plant_mapping :jsonb
+#  template_id                :integer
+#  template_placements        :jsonb
+#  template_plant_mapping     :jsonb
 #
 # Indexes
 #

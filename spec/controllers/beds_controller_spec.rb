@@ -83,11 +83,19 @@ describe BedsController do
     it 'updates the Bed' do
       expect(bed.orientation).not_to eq('south') # Assumption
 
-      patch(:update, params: { id: bed.id, orientation: 'south'})
+      template_placements = [{'plant' => {'common_name' => 'planty'}}]
+
+      patch(:update, params: { id: bed.id,
+                             orientation: 'south',
+                             template_id: 1,
+                             template_placements: template_placements
+                           })
       expect(response.status).to eq(200)
 
       bed.reload
       expect(bed.orientation).to eq('south')
+      expect(bed.template_id).to eq(1)
+      expect(bed.template_placements).to eq(template_placements)
     end
 
     it 'returns an error if the Bed is invalid' do

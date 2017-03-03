@@ -9,3 +9,4 @@ json.sunlight_morning bed.sunlight_morning
 json.sunlight_afternoon bed.sunlight_afternoon
 json.watered bed.watered
 json.template_id bed.template_id
+json.template_placements bed.template_placements

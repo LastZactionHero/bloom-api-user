@@ -31,7 +31,6 @@ class BedsController < ApplicationController
 
   def set_template
     @bed.template_id = params[:template_id].to_i
-    puts params[:template_id].to_i
     @bed.save
 
     if @bed.errors.any?
@@ -49,6 +48,9 @@ class BedsController < ApplicationController
     @bed.sunlight_morning = params[:sunlight_morning] if params[:sunlight_morning]
     @bed.sunlight_afternoon = params[:sunlight_afternoon] if params[:sunlight_afternoon]
     @bed.watered = params[:watered].to_bool unless params[:watered].nil?
+    @bed.template_id = params[:template_id]
+
+    @bed.template_placements = params[:template_placements]
     @bed.save
 
     if @bed.errors.any?

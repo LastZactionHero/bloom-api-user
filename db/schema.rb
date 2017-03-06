@@ -18,21 +18,18 @@ ActiveRecord::Schema.define(version: 20170223064658) do
   create_table "beds", force: :cascade do |t|
     t.integer  "yard_id"
     t.string   "name"
-    t.boolean  "attached_to_house",          default: false
+    t.boolean  "attached_to_house",      default: false
     t.string   "orientation"
     t.float    "width"
     t.float    "depth"
     t.string   "sunlight_morning"
     t.string   "sunlight_afternoon"
-    t.boolean  "watered",                    default: false
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.integer  "api_bed_tmpl_id"
-    t.jsonb    "api_bed_tmpl_placements",    default: {}
-    t.jsonb    "api_bed_tmpl_plant_mapping", default: {}
+    t.boolean  "watered",                default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "template_id"
-    t.jsonb    "template_placements",        default: {}
-    t.jsonb    "template_plant_mapping",     default: {}
+    t.jsonb    "template_placements",    default: {}
+    t.jsonb    "template_plant_mapping", default: {}
     t.index ["yard_id"], name: "index_beds_on_yard_id", using: :btree
   end
 

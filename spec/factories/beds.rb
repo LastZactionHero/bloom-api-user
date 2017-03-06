@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :bed do
     yard_id 1
+    template_id nil
     name "Front Yard Bed"
     attached_to_house false
     orientation "north"

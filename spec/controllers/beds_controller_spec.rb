@@ -66,6 +66,21 @@ describe BedsController do
       expect(body['template_id']).to eq(bed.template_id)
     end
 
+    it 'clear existing template assignments' do
+      bed.template_id = 20
+      bed.template_placements = {a: 1}
+      bed.template_plant_mapping = {a: 'planty'}
+      bed.save
+
+      patch :set_template, params: { id: bed.id, template_id: 21}
+      expect(response.status).to eq(200)
+
+      bed.reload
+      expect(bed.template_id).to eq(21)
+      expect(bed.template_placements).to eq({})
+      expect(bed.template_plant_mapping).to eq({})
+    end
+
     it 'returns an error if the template_id is not valid' do
       patch :set_template, params: { id: bed.id }
       expect(response.status).to eq(400)
@@ -84,11 +99,13 @@ describe BedsController do
       expect(bed.orientation).not_to eq('south') # Assumption
 
       template_placements = [{'plant' => {'common_name' => 'planty'}}]
+      template_plant_mapping =  [{'plant' => {'permalink' => 'shrub'}, 'templatePlant' => {'label' => 'V'}}]
 
       patch(:update, params: { id: bed.id,
                              orientation: 'south',
                              template_id: 1,
-                             template_placements: template_placements
+                             template_placements: template_placements,
+                             template_plant_mapping: template_plant_mapping
                            })
       expect(response.status).to eq(200)
 
@@ -96,6 +113,7 @@ describe BedsController do
       expect(bed.orientation).to eq('south')
       expect(bed.template_id).to eq(1)
       expect(bed.template_placements).to eq(template_placements)
+      expect(bed.template_plant_mapping).to eq(template_plant_mapping)
     end
 
     it 'returns an error if the Bed is invalid' do

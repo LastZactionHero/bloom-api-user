@@ -31,6 +31,8 @@ class BedsController < ApplicationController
 
   def set_template
     @bed.template_id = params[:template_id].to_i
+    @bed.template_placements = {}
+    @bed.template_plant_mapping = {}
     @bed.save
 
     if @bed.errors.any?
@@ -51,6 +53,8 @@ class BedsController < ApplicationController
     @bed.template_id = params[:template_id]
 
     @bed.template_placements = params[:template_placements]
+    @bed.template_plant_mapping = params[:template_plant_mapping]
+
     @bed.save
 
     if @bed.errors.any?

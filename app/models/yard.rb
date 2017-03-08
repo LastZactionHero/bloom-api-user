@@ -19,7 +19,7 @@
 #
 class Yard < ApplicationRecord
   belongs_to :user, optional: true
-  has_many :beds
+  has_many :beds, dependent: :destroy
 
   validates_presence_of :user_id
   validates_presence_of :zipcode

@@ -38,26 +38,6 @@ RSpec.describe Bed, type: :model do
       end
       bed = Bed.create(orientation: 'northly')
       expect(bed.errors[:orientation]).to include('is not included in the list')
-    end
-
-    it 'validates sunlight_morning is in list' do
-      sunlights = %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade)
-      sunlights.each do |sunlight|
-        bed = Bed.create(sunlight_morning: sunlight)
-        expect(bed.errors[:sunlight_morning]).to be_empty
-      end
-      bed = Bed.create(sunlight_morning: 'darkish')
-      expect(bed.errors[:sunlight_morning]).to include('is not included in the list')
-    end
-
-    it 'validates sunlight_afternoon is in list' do
-      sunlights = %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade)
-      sunlights.each do |sunlight|
-        bed = Bed.create(sunlight_afternoon: sunlight)
-        expect(bed.errors[:sunlight_afternoon]).to be_empty
-      end
-      bed = Bed.create(sunlight_afternoon: 'darkish')
-      expect(bed.errors[:sunlight_afternoon]).to include('is not included in the list')
-    end
+    end    
   end
 end

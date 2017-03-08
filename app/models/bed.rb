@@ -9,14 +9,14 @@
 #  orientation            :string
 #  width                  :float
 #  depth                  :float
-#  sunlight_morning       :string
-#  sunlight_afternoon     :string
 #  watered                :boolean          default(FALSE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  template_id            :integer
 #  template_placements    :jsonb
 #  template_plant_mapping :jsonb
+#  sunlight_morning       :boolean          default(FALSE)
+#  sunlight_afternoon     :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -31,8 +31,5 @@ class Bed < ApplicationRecord
   validates_presence_of :depth
   validates :depth, numericality: { greater_than_or_equal_to: 2.0, less_than_or_equal_to: 100.0 }
   validates :orientation, inclusion: { in: %w(north south east west) }, allow_nil: true
-  validates :sunlight_morning, inclusion: { in: %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade) }, allow_nil: true
-  validates :sunlight_afternoon, inclusion: { in: %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade) }, allow_nil: true
-  validates :sunlight_afternoon, inclusion: { in: %w(full_sun partial_sun partial_shade full_shade filtered_sun filtered_shade) }, allow_nil: true
   validates :template_id, numericality: { only_integer: true, greater_than_or_equal_to: 1, message: 'is not valid' }, allow_nil: true
 end

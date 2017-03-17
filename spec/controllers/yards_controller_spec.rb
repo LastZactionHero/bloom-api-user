@@ -104,6 +104,16 @@ describe YardsController do
       post :create, params: { zone: zone, zipcode: zipcode }
       expect(response.status).to eq(401)
     end
+
+    it 'raises an error if a trial user that already has one yard' do
+      user.account_status = 'trial'
+      user.save
+
+      FactoryGirl.create(:yard, user: user)
+
+      post :create, params: { zone: zone, zipcode: zipcode, soil: 'wet', preferred_plant_types: ['annuals'] }
+      expect(response.status).to eq(403)
+    end
   end
 
   describe 'update' do

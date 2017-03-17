@@ -10,6 +10,11 @@ class YardsController < ApplicationController
   end
 
   def create
+    if current_user.account_status == 'trial' && current_user.yards.any?
+      render status: 403, json: {}
+      return
+    end
+
     @yard = Yard.create(
       user: current_user,
       zipcode: params[:zipcode],

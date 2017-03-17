@@ -10,6 +10,11 @@ class BedsController < ApplicationController
   end
 
   def create
+    if current_user.account_status == 'trial' && @yard.beds.any?
+      render status: 403, json: {}
+      return
+    end
+
     @bed = Bed.create(
       yard: @yard,
       name: params[:name],

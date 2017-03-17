@@ -22,10 +22,11 @@ describe UsersController do
       user = User.first
       expect(user.email).to eq(email)
       expect(user.valid_password?(password)).to be_truthy
+      expect(user.account_status).to eq('trial')
 
       # User is returned
       body = JSON.parse(response.body)
-      expect(body).to eq({'email' => user.email})
+      expect(body).to eq({'email' => user.email, 'account' => user.account})
     end
 
     it 'signs in' do
@@ -67,7 +68,7 @@ describe UsersController do
 
       # User is returned
       body = JSON.parse(response.body)
-      expect(body).to eq({'email' => user.email})
+      expect(body).to eq({'email' => user.email, 'account' => user.account})
     end
 
     it 'returns an error if the email is not found' do
@@ -104,7 +105,7 @@ describe UsersController do
       get(:ping)
       expect(response.status).to eq(200)
       body = JSON.parse(response.body)
-      expect(body['email']).to eq(user.email)
+      expect(body).to eq({'email' => user.email, 'account' => user.account})
     end
 
     it 'returns 401 if not signed in' do

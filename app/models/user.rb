@@ -15,6 +15,7 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  account                :jsonb
 #
 # Indexes
 #
@@ -29,4 +30,26 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :yards
+
+  before_validation :init_account
+  validate :validate_account_status
+
+  def account_status=(status)
+    self.account['status'] = status
+  end
+
+  def account_status
+    self.account['status']
+  end
+
+  private
+
+  def init_account
+    self.account['status'] ||= 'trial'
+    self.account['payments'] ||= []
+  end
+
+  def validate_account_status
+    errors.add(:account_status, 'is not valid') unless %w(trial full_access).include?(self.account['status'])
+  end
 end

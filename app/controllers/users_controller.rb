@@ -34,4 +34,39 @@ class UsersController < ApplicationController
     head 401 unless current_user
   end
 
+  def upgrade
+    unless current_user
+      render status: 401, json: {}
+      return
+    end
+
+    @user = current_user
+
+    Stripe.api_key = ENV['STRIPE_KEY_SECRET']
+
+    token = params[:token][:id]
+
+    begin
+      charge = Stripe::Charge.create(
+        :amount => 1499,
+        :currency => 'usd',
+        :description => "Unlimited Access 1 Year",
+        :source => token,
+      )
+    rescue Stripe::InvalidRequestError => e
+      render status: 400, json: { error: e.message }
+      return
+    end
+
+    if charge.status == 'succeeded'
+      @user.account_status = 'full_access'
+      @user.account['payments'] << charge
+      @user.save
+    else
+      render status: 400, json: {}
+      return
+    end
+
+  end
+
 end

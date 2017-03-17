@@ -113,4 +113,41 @@ describe UsersController do
       expect(response.status).to eq(401)
     end
   end
+
+  describe 'upgrade' do
+    let(:user) { FactoryGirl.create(:user, account_status: 'trial')}
+
+    it 'upgrades to full_access' do
+      VCR.use_cassette("upgrade_success") do
+        sign_in(user)
+        post(:upgrade, params: {token: {id: 'tok_19yQsmKSEf5qLSTcb23fFbSI'}})
+
+        user.reload
+        expect(user.account_status).to eq('full_access')
+
+        expect(response.status).to eq(200)
+        body = JSON.parse(response.body)
+        expect(body).to eq({'email' => user.email, 'account' => user.account})
+      end
+    end
+
+    it 'fails if the token is invalid' do
+      VCR.use_cassette("upgrade_fail") do
+        sign_in(user)
+        post(:upgrade, params: {token: {id: 'tok_bad_token'}})
+
+        user.reload
+        expect(user.account_status).to eq('trial')
+
+        expect(response.status).to eq(400)
+        body = JSON.parse(response.body)
+        expect(body).to eq({'error' => 'No such token: tok_bad_token'})
+      end
+    end
+
+    it 'returns an error if the user is not signed in' do
+      post(:upgrade, params: {token: {id: 'tok_12345'}})
+      expect(response.status).to eq(401)
+    end
+  end
 end

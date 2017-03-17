@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   post '/users/sign_in_as', to: 'users#sign_in_user'
   post '/users/sign_out', to: 'users#sign_out_user'
   get '/users/ping', to: 'users#ping'
+  post '/users/upgrade', to: 'users#upgrade'
 
   resources :yards, only: [:index, :show, :create, :update, :destroy]
   resources :beds, only: [:index, :show, :create, :update, :destroy] do

@@ -1,0 +1,65 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/charges
+    body:
+      encoding: UTF-8
+      string: amount=1499&currency=usd&description=Unlimited+Access+1+Year&source=tok_bad_token
+    headers:
+      User-Agent:
+      - Stripe/v1 RubyBindings/2.0.3
+      Authorization:
+      - Bearer sk_test_iRwccJ8axNwHNXBkSMqFVQkY
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"2.0.3","lang":"ruby","lang_version":"2.4.0 p0 (2016-12-24)","platform":"x86_64-linux","engine":"ruby","publisher":"stripe","uname":"Linux
+        version 4.4.43-boot2docker (root@33842653d6db) (gcc version 4.9.2 (Debian
+        4.9.2-10) ) #1 SMP Wed Jan 18 18:33:18 UTC 2017","hostname":"f4e175aa7651"}'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 17 Mar 2017 19:38:32 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '127'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_AJ30bKkIPiej1L
+      Stripe-Version:
+      - '2017-02-14'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "No such token: tok_bad_token",
+            "param": "source"
+          }
+        }
+    http_version: 
+  recorded_at: Fri, 17 Mar 2017 19:38:32 GMT
+recorded_with: VCR 3.0.3

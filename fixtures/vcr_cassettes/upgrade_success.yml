@@ -10,7 +10,7 @@ http_interactions:
       User-Agent:
       - Stripe/v1 RubyBindings/2.0.3
       Authorization:
-      - Bearer sk_test_iRwccJ8axNwHNXBkSMqFVQkY
+      - Bearer sk_test_xxx
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
@@ -128,6 +128,6 @@ http_interactions:
           "status": "succeeded",
           "transfer_group": null
         }
-    http_version: 
+    http_version:
   recorded_at: Fri, 17 Mar 2017 19:37:31 GMT
 recorded_with: VCR 3.0.3

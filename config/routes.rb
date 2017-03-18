@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   post '/users/sign_out', to: 'users#sign_out_user'
   get '/users/ping', to: 'users#ping'
   post '/users/upgrade', to: 'users#upgrade'
+  get '/promo_codes/validate', to: 'promo_codes#validate'
 
   resources :yards, only: [:index, :show, :create, :update, :destroy]
   resources :beds, only: [:index, :show, :create, :update, :destroy] do

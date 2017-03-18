@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170317151632) do
+ActiveRecord::Schema.define(version: 20170318160506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(version: 20170317151632) do
     t.boolean  "sunlight_morning",       default: false
     t.boolean  "sunlight_afternoon",     default: false
     t.index ["yard_id"], name: "index_beds_on_yard_id", using: :btree
+  end
+
+  create_table "promo_codes", force: :cascade do |t|
+    t.string   "code"
+    t.float    "discount",   default: 0.0
+    t.boolean  "reusable",   default: true
+    t.integer  "use_count",  default: 0
+    t.datetime "expiration"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["code"], name: "index_promo_codes_on_code", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

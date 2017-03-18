@@ -131,6 +131,63 @@ describe UsersController do
       end
     end
 
+    describe 'promo_codes' do
+      it 'applies and redeems a promo code' do
+        promo_code = FactoryGirl.create(:promo_code, discount: 50.0)
+
+        VCR.use_cassette("upgrade_success_promo") do
+          sign_in(user)
+          post(:upgrade, params: {token: {id: 'tok_19ylK8KSEf5qLSTcR4YQt9YY'}, promo_code: promo_code.code})
+
+          user.reload
+          expect(user.account_status).to eq('full_access')
+
+          expect(response.status).to eq(200)
+          body = JSON.parse(response.body)
+          expect(body).to eq({'email' => user.email, 'account' => user.account})
+
+          # Purchased at discounted price
+          user.account['payments'][0]['amount']
+          expect(user.account['payments'][0]['amount']).to eq(promo_code.discounted_price(Product.product_price) * 100)
+
+          # Promo code used
+          promo_code.reload
+          expect(promo_code.use_count).to eq(1)
+        end
+      end
+
+      it 'does not charge a card if the promo code is 100% discount' do
+        promo_code = FactoryGirl.create(:promo_code, discount: 100)
+
+        sign_in(user)
+        post(:upgrade, params: {promo_code: promo_code.code})
+
+        user.reload
+        expect(user.account_status).to eq('full_access')
+
+        expect(response.status).to eq(200)
+
+        promo_code.reload
+        expect(promo_code.use_count).to eq(1)
+      end
+    end
+
+    it 'applies a promo code' do
+      promo_code = FactoryGirl.create(:promo_code)
+
+      VCR.use_cassette("upgrade_success") do
+        sign_in(user)
+        post(:upgrade, params: {token: {id: 'tok_19yQsmKSEf5qLSTcb23fFbSI'}, promo_code: promo_code.code})
+
+        user.reload
+        expect(user.account_status).to eq('full_access')
+
+        expect(response.status).to eq(200)
+        body = JSON.parse(response.body)
+        expect(body).to eq({'email' => user.email, 'account' => user.account})
+      end
+    end
+
     it 'fails if the token is invalid' do
       VCR.use_cassette("upgrade_fail") do
         sign_in(user)

@@ -17,6 +17,7 @@
 #  template_plant_mapping :jsonb
 #  sunlight_morning       :boolean          default(FALSE)
 #  sunlight_afternoon     :boolean          default(FALSE)
+#  soil                   :string
 #
 # Indexes
 #
@@ -32,4 +33,5 @@ class Bed < ApplicationRecord
   validates :depth, numericality: { greater_than_or_equal_to: 2.0, less_than_or_equal_to: 100.0 }
   validates :orientation, inclusion: { in: %w(north south east west) }, allow_nil: true
   validates :template_id, numericality: { only_integer: true, greater_than_or_equal_to: 1, message: 'is not valid' }, allow_nil: true
+  validates :soil, inclusion: { in: %w(dry normal wet) }, allow_nil: true
 end

@@ -38,6 +38,18 @@ RSpec.describe Bed, type: :model do
       end
       bed = Bed.create(orientation: 'northly')
       expect(bed.errors[:orientation]).to include('is not included in the list')
-    end    
+    end
+
+    it 'accepts valid soil types' do
+      valid = %w(dry normal wet)
+      valid.each do |soil|
+        bed = Bed.create(soil: soil)
+        expect(bed.errors[:soil]).to be_empty
+      end
+
+      bed = Bed.create(soil: 'mushy')
+      expect(bed.errors[:soil]).to include('is not included in the list')
+    end
+
   end
 end

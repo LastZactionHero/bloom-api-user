@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170318160506) do
+ActiveRecord::Schema.define(version: 20170319195829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20170318160506) do
     t.jsonb    "template_plant_mapping", default: {}
     t.boolean  "sunlight_morning",       default: false
     t.boolean  "sunlight_afternoon",     default: false
+    t.string   "soil"
     t.index ["yard_id"], name: "index_beds_on_yard_id", using: :btree
   end
 

@@ -119,37 +119,37 @@ describe YardsController do
   describe 'update' do
 
     it 'updates a yard' do
-      expect(yard.soil).not_to eq('moderate')
-      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'moderate' })
+      expect(yard.soil).not_to eq('normal')
+      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'normal' })
       expect(response.status).to eq(200)
 
       yard.reload
       expect(yard.zipcode).to eq('11111')
       expect(yard.zone).to eq('2A')
-      expect(yard.soil).to eq('moderate')
+      expect(yard.soil).to eq('normal')
     end
 
     it 'returns a yard' do
-      expect(yard.soil).not_to eq('moderate')
-      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'moderate' })
+      expect(yard.soil).not_to eq('normal')
+      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'normal' })
       expect(response.status).to eq(200)
 
       body = JSON.parse(response.body)
       expect(body['zipcode']).to eq('11111')
       expect(body['zone']).to eq('2A')
-      expect(body['soil']).to eq('moderate')
+      expect(body['soil']).to eq('normal')
     end
 
     it 'returns an error if the yard belongs to a different user' do
       yard.user = FactoryGirl.create(:user, email: 'another@user.com')
       yard.save
 
-      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'moderate' })
+      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'normal' })
       expect(response.status).to eq(403)
     end
 
     it 'returns an error if data is invalid' do
-      expect(yard.soil).not_to eq('moderate')
+      expect(yard.soil).not_to eq('normal')
       patch(:update, params: { id: yard.id, soil: 'mushy' })
       expect(response.status).to eq(400)
 
@@ -164,7 +164,7 @@ describe YardsController do
 
     it 'returns an error if not signed in' do
       sign_out(user)
-      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'moderate' })
+      patch(:update, params: { id: yard.id, zipcode: '11111', zone: '2A', soil: 'normal' })
       expect(response.status).to eq(401)
     end
 

@@ -24,5 +24,5 @@ class Yard < ApplicationRecord
   validates_presence_of :user_id
   validates_presence_of :zipcode
   validates_presence_of :zone
-  validates :soil, inclusion: { in: %w(dry moderate wet) }, allow_nil: true
+  validates :soil, inclusion: { in: %w(dry normal wet) }, allow_nil: true
 end

@@ -24,7 +24,7 @@ RSpec.describe Yard, type: :model do
     end
 
     it 'accepts valid soil types' do
-      valid = %w(dry moderate wet)
+      valid = %w(dry normal wet)
       valid.each do |soil|
         yard = Yard.create(soil: soil)
         expect(yard.errors[:soil]).to be_empty

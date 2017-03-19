@@ -24,6 +24,7 @@ class BedsController < ApplicationController
       attached_to_house: params[:attached_to_house].to_bool,
       sunlight_morning: params[:sunlight_morning].to_bool,
       sunlight_afternoon: params[:sunlight_afternoon].to_bool,
+      soil: params[:soil],
       watered: params[:watered].to_bool
     )
     if @bed.errors.any?

@@ -34,6 +34,36 @@ describe UsersController do
       expect(session['warden.user.user.key'][0][0]).to eq(User.first.id)
     end
 
+    describe 'promo code' do
+      it 'applies a promo code' do
+        promo_code = FactoryGirl.create(:promo_code, discount: 100)
+        post(:sign_up_user, params: { email: email, password: password, promo_code: promo_code.code })
+
+        user = User.first
+        expect(user.account_status).to eq('full_access')
+      end
+
+      it 'raises an error if the promo code is invalid' do
+        post(:sign_up_user, params: { email: email, password: password, promo_code: 'fake_code' })
+        expect(response.status).to eq(400)
+        body = JSON.parse(response.body)
+        expect(body['errors']['promo_code']).to include('is not valid')
+
+        expect(User.count).to eq(0)
+      end
+
+      it 'raises an error if the promo code is not 100%' do
+        promo_code = FactoryGirl.create(:promo_code, discount: 50)
+        post(:sign_up_user, params: { email: email, password: password, promo_code: promo_code.code })
+
+        expect(response.status).to eq(400)
+        body = JSON.parse(response.body)
+        expect(body['errors']['promo_code']).to include('must be redeemed at purchase')
+
+        expect(User.count).to eq(0)
+      end
+    end
+
     it 'returns an error if the password is too short' do
       post(:sign_up_user, params: { email: email, password: '1234' })
       expect(response.status).to eq(400)

@@ -12,12 +12,12 @@ describe PromoCodesController do
   end
 
   describe 'validate' do
-    it 'returns an error if the user is not signed in' do
-      sign_out(user)
-
-      get(:validate)
-      expect(response.status).to eq(401)
-    end
+    # it 'returns an error if the user is not signed in' do
+    #   sign_out(user)
+    #
+    #   get(:validate)
+    #   expect(response.status).to eq(401)
+    # end
 
     it 'returns successfully if the promo code is valid' do
       get(:validate, params: {code: promo_code.code})

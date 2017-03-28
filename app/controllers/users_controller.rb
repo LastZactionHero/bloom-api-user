@@ -1,7 +1,30 @@
 class UsersController < ApplicationController
   def sign_up_user
-    @user = User.create(email: params[:email],
+    promo_code = nil
+    if params[:promo_code].present?
+      promo_code = PromoCode.validate_by_code(params[:promo_code])
+
+      error_msg = nil
+      error_msg = if promo_code.nil?
+        'is not valid'
+      elsif promo_code.discount != 100
+        'must be redeemed at purchase'
+      end
+      if error_msg
+        render status: 400, json: { errors: { promo_code: [error_msg]}}
+        return
+      end
+    end
+
+    @user = User.new(email: params[:email],
                        password: params[:password])
+
+    if promo_code
+      PromoCode.redeem_by_code!(promo_code.code)
+      @user.account_status = 'full_access'
+    end
+
+    @user.save
 
     if @user.errors.any?
       render status: 400, json: { errors: @user.errors }

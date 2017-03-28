@@ -1,5 +1,5 @@
 class PromoCodesController < ApplicationController
-  before_action :validate_signed_in
+  # before_action :validate_signed_in
 
   def validate
     @promo_code = PromoCode.validate_by_code(params[:code])

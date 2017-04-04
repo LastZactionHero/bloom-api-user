@@ -5,7 +5,7 @@ namespace :auto_bed_generator do
   task :generate => :environment do
     # User.create(email: 'auto@pb.dev', password: 'abcd1234', password_confirmation: 'abcd1234')
     user = User.find_by(email: 'auto@pb.dev') # abcd1234
-    # yard = user.yards.destroy_all
+    yard = user.yards.destroy_all
 
     city_zipcodes = CSV.read("#{Rails.root}/scripts/top_cities_by_zipcode.csv"); 0
     city_zipcodes.shift; 0
@@ -21,14 +21,20 @@ namespace :auto_bed_generator do
     ]
 
     # Create the Yard
-    zipcodes.each_with_index do |zipcode, zipcode_idx|
+    zipcodes.first(5).each_with_index do |zipcode, zipcode_idx|
       puts "Zipcode: #{zipcode} (#{zipcode_idx}/#{zipcodes.length})"
-      next if Yard.find_by(zipcode: zipcode)
+      next if user.yards.find_by(zipcode: zipcode)
 
       begin
         soil = 'normal'
         zone = JSON.parse(RestClient.get("http://api:3000/zones/search?zipcode=#{zipcode}").body)['zone']
         yard = Yard.create(user_id: user.id, zipcode: zipcode, zone: zone, soil: soil)
+
+        # Remove older yards
+        MAX_YARDS = 10
+        if user.yards.count > MAX_YARDS
+          user.yards.order("id ASC").first(user.yards.count - MAX_YARDS).each{|y| y.destroy}
+        end
 
         # Create the Beds
         orientation_offset = [0,1,2,3].sample
@@ -128,12 +134,13 @@ namespace :auto_bed_generator do
         Rails.logger.warn "ERROR! #{zipcode}"
         Rails.logger.warn e
       end
+
+      puts "open http://dev-app.plantwithbloom.com:8002/dashboard/yards/#{yard.id}"
+
     end
-
-    # Download the images
-    user.yards.each do |yard|
-      puts "firefox http://dev-app.plantwithbloom.com:8002/dashboard/yards/#{yard.id}\nsleep 5"
-    end; 0
-
   end
 end
+
+
+
+# docker-compose exec api_user rake auto_bed_generator:generate | grep "open http" > ./api_user/src/scripts/auto_yards.txt

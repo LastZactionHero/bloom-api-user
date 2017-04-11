@@ -13,15 +13,15 @@ namespace :auto_bed_generator do
 
     beds_data = [
       { name: 'Front Yard, Porch', attached_to_house: true, orientation: 0, width: (26..30).to_a, depth: (5..7).to_a, watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
-      { name: 'Front Yard, Side of Driveway', attached_to_house: true, orientation: 0, width: (14..16).to_a, depth: (4..6).to_a, watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
+      { name: 'Front Yard, Side of Driveway', attached_to_house: true, orientation: 0, width: [15].to_a, depth: [5].to_a, watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
       { name: 'Side Yard', attached_to_house: true, orientation: 1, width: (26..30).to_a, depth: (5..7).to_a, watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
-      { name: 'Back Yard, Beneath Porch', attached_to_house: true, orientation: 2, width: (14..16).to_a, depth: (4..6).to_a, watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
+      { name: 'Back Yard, Beneath Porch', attached_to_house: true, orientation: 2, width: [15], depth: [5], watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
       { name: 'Back Yard, Along Fence', attached_to_house: true, orientation: 2, width: (26..30).to_a, depth: (5..7).to_a, watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
       { name: 'Back Yard, Corner', attached_to_house: false, orientation: 2, width: (4..6).to_a, depth: (4..6).to_a, watered: false, soil: 'normal', sunlight_morning: nil, sunlight_afternoon: nil},
     ]
 
     # Create the Yard
-    zipcodes.first(5).each_with_index do |zipcode, zipcode_idx|
+    zipcodes.first(150).each_with_index do |zipcode, zipcode_idx|
       puts "Zipcode: #{zipcode} (#{zipcode_idx}/#{zipcodes.length})"
       next if user.yards.find_by(zipcode: zipcode)
 
@@ -33,7 +33,10 @@ namespace :auto_bed_generator do
         # Remove older yards
         MAX_YARDS = 10
         if user.yards.count > MAX_YARDS
-          user.yards.order("id ASC").first(user.yards.count - MAX_YARDS).each{|y| y.destroy}
+          user.yards.order("id ASC").first(user.yards.count - MAX_YARDS).each do |y|
+            y.user_id = 999
+            y.save!
+          end
         end
 
         # Create the Beds
@@ -141,6 +144,11 @@ namespace :auto_bed_generator do
   end
 end
 
-
-
-# docker-compose exec api_user rake auto_bed_generator:generate | grep "open http" > ./api_user/src/scripts/auto_yards.txt
+# - Open Chrome, log in as auto@pb.dev in incognito
+# - Turn on XTab, max 3 tabs
+# - Clear downloads folder
+# - On host machine, run: ruby ./auto_yard_downloader.rb
+# - Run: docker-compose exec api_user rake auto_bed_generator:generate > ./api_user/src/scripts/auto_yards.txt
+# - Select "Download All" in Chrome as soon as the first bed launches
+# - Restore all yards with User ID to auto user
+# - Run: docker-compose exec api_user rake auto_city_page_generator:generate

@@ -26,11 +26,10 @@ describe BedsController do
       expect(bed.watered).to be_truthy
     end
 
-    it 'returns an error if a trial user and the yard already has one bed' do
+    it 'returns an error if a trial user' do
       user.account_status = 'trial'
       user.save
 
-      FactoryGirl.create(:bed, yard: yard)
       post(:create, params: { yard_id: yard.id, width: 30, depth: 6, watered: true })
       expect(response.status).to eq(403)
     end

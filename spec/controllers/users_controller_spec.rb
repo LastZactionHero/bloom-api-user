@@ -177,8 +177,9 @@ describe UsersController do
           expect(body).to eq({'email' => user.email, 'account' => user.account})
 
           # Purchased at discounted price
-          user.account['payments'][0]['amount']
-          expect(user.account['payments'][0]['amount']).to eq(promo_code.discounted_price(Product.product_price) * 100)
+          # Using 14.99, which was the product price when test was written,
+          # don't want to redo VCR request
+          expect(user.account['payments'][0]['amount']).to eq(promo_code.discounted_price(14.99) * 100)
 
           # Promo code used
           promo_code.reload

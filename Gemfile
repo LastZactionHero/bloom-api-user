@@ -33,6 +33,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'factory_girl_rails', '~> 4.8'
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
+  gem 'rubocop', require: false
   gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock', '~> 2.3', '>= 2.3.2'
 end
